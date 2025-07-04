@@ -18,8 +18,13 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        val homeAdapter = HomeFragmentAdapter() {
+
+        }
+        binding.recyclerview.adapter = homeAdapter
+        homeAdapter.setData(emptyList())
     }
-     val rv = binding.recyclerview
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
