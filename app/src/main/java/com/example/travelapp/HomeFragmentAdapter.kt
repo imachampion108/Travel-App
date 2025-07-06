@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.travelapp.databinding.ViewHolderAttractionBinding
 import com.squareup.picasso.Picasso
 
-class HomeFragmentAdapter( private val onClickedBack: () -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class HomeFragmentAdapter( private val onClickedBack: (String) -> Unit) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
     private val attraction = ArrayList<Attractions>()
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return  MyViewholder(parent)  }
@@ -30,12 +30,12 @@ class HomeFragmentAdapter( private val onClickedBack: () -> Unit) : RecyclerView
         LayoutInflater.from(parent.context).inflate(R.layout.view_holder_attraction,parent,false)
     ){
         private val binding = ViewHolderAttractionBinding.bind(itemView)
-        fun onBind(attractions: Attractions, onClicked : () -> Unit){
+        fun onBind(attractions: Attractions, onClicked : (String) -> Unit){
             binding.titleTextView.text = attractions.title
             binding.monthsToVisitTV.text = attractions.months_to_visit
-            Picasso.get().load(attractions.image_urls[position]).into(binding.imageHeaderView)
+            Picasso.get().load(attractions.image_urls).into(binding.imageHeaderView)
                binding.root.setOnClickListener {
-                  onClicked()
+                  onClicked
                }
         }
     }

@@ -1,5 +1,6 @@
 package com.example.travelapp
 
+import Attractions
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,4 +11,6 @@ abstract class BaseFragment() : Fragment(){
     protected val navController by lazy {
         (activity as MainActivity).navController
     }
+    protected val attractions : List<Attractions>
+        get() = (activity as MainActivity).attractionList
 }

@@ -53,5 +53,5 @@ dependencies {
     implementation(libs.androidx.navigation.fragment.ktx)
     implementation(libs.androidx.navigation.ui.ktx)
     implementation(libs.picasso)
-    implementation(libs.moshi)
+    implementation("com.squareup.moshi:moshi-kotlin:1.15.2")
 }

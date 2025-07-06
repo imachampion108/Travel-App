@@ -1,5 +1,6 @@
 package com.example.travelapp
 
+import Attractions
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -19,11 +20,11 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val homeAdapter = HomeFragmentAdapter() {
+        val homeAdapter = HomeFragmentAdapter {
 
         }
         binding.recyclerview.adapter = homeAdapter
-        homeAdapter.setData(emptyList())
+        homeAdapter.setData(attractions)
     }
     override fun onDestroyView() {
         super.onDestroyView()
