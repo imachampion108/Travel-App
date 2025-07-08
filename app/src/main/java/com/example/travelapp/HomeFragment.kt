@@ -22,7 +22,9 @@ class HomeFragment() : BaseFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val homeAdapter = HomeFragmentAdapter {
+        val homeAdapter = HomeFragmentAdapter { attractionId ->
+            val navDirections = HomeFragmentDirections.actionHomeFragmentToAttractionDetailsFragment(attractionId)
+            navController.navigate(navDirections)
         }
         binding.recyclerview.adapter = homeAdapter
         binding.recyclerview.addItemDecoration(DividerItemDecoration(requireActivity(),RecyclerView.VERTICAL))

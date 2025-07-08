@@ -16,7 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         android:layout_margin="8dp"
         android:textSize="22sp"
-        android:textColor="@color/black"
+        android:textColor="@color/white"
         android:textStyle="bold"
         android:text="Title"/>
 
