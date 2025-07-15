@@ -1,9 +1,14 @@
 package com.example.travelapp
 
 import Attractions
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
+import android.view.Menu
+import android.view.MenuInflater
+import android.view.MenuItem
 import android.view.View
 import android.view.ViewGroup
 import androidx.navigation.fragment.navArgs
@@ -17,6 +22,11 @@ class AttractionDetailsFragment : BaseFragment() {
     private val safeArgs : AttractionDetailsFragmentArgs by navArgs()
     private val attraction : Attractions by lazy {
         attractions.find { it.id == safeArgs.attractionId }!!
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
     }
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         _binding = FragmentAttractionDetailsBinding.inflate(inflater,container,false)
@@ -34,7 +44,21 @@ class AttractionDetailsFragment : BaseFragment() {
         }
     }
 
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+          inflater.inflate(R.menu.menu_attraction_details,menu)    }
 
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when(item.itemId){
+            R.id.menuItemLocation -> {
+                val Uri = Uri.parse("geo:${attraction.location.latitude},${attraction.location.longitude}?z=9&q=${attraction.title}")
+                val mapIntent = Intent(Intent.ACTION_VIEW, Uri)
+                mapIntent.setPackage("com.google.android.apps.maps")
+                startActivity(mapIntent)
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
