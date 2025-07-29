@@ -23,12 +23,15 @@ class HomeFragment() : BaseFragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val homeAdapter = HomeFragmentAdapter { attractionId ->
-            val navDirections = HomeFragmentDirections.actionHomeFragmentToAttractionDetailsFragment(attractionId)
-            navController.navigate(navDirections)
+            navController.navigate(R.id.action_homeFragment_to_attractionDetailsFragment)
+            attractionViewModel.onSelectedLiveData(attractionId)
         }
         binding.recyclerview.adapter = homeAdapter
         binding.recyclerview.addItemDecoration(DividerItemDecoration(requireActivity(),RecyclerView.VERTICAL))
-        homeAdapter.setData(attractions)
+        attractionViewModel.attractionViewModelLiveData.observe(viewLifecycleOwner){ attractions ->
+            homeAdapter.setData(attractions)
+
+        }
     }
     override fun onDestroyView() {
         super.onDestroyView()

@@ -1,27 +1,24 @@
 package com.example.travelapp
 
 import Attractions
-import androidx.appcompat.widget.Toolbar;
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.NavigationUI
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.example.travelapp.arch.AttractionViewModel
 import com.squareup.moshi.JsonAdapter
 import com.squareup.moshi.Moshi
-import com.squareup.moshi.Types
 import com.squareup.moshi.kotlin.reflect.KotlinJsonAdapterFactory
 
 class MainActivity : AppCompatActivity() {
-   val attractionList : List<Attractions> by lazy {
-        parseAttractions()
-    }
+ val viewModel : AttractionViewModel by viewModels()
     lateinit var navController: NavController
     private lateinit var appBarConfiguration: AppBarConfiguration
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -34,15 +31,18 @@ class MainActivity : AppCompatActivity() {
 
         appBarConfiguration = AppBarConfiguration(navController.graph)
         setupActionBarWithNavController(navController,appBarConfiguration)
+        viewModel.init(this)
+        viewModel.locationLiveData.observe(this){ attraction ->
+            val Uri = Uri.parse("geo:${attraction.location.latitude},${attraction.location.longitude}?z=9&q=${attraction.title}")
+            val mapIntent = Intent(Intent.ACTION_VIEW, Uri)
+            mapIntent.setPackage("com.google.android.apps.maps")
+            startActivity(mapIntent)
+
+        }
 
     }
     override fun onSupportNavigateUp(): Boolean {
         return navController.navigateUp(appBarConfiguration)|| super.onSupportNavigateUp()
     }
-   private fun parseAttractions(): List<Attractions>{
-      val textFromFile = resources.openRawResource(R.raw.croatia).bufferedReader().use { it.readText() }
-       val moshi = Moshi.Builder().addLast(KotlinJsonAdapterFactory()).build()
-       val adapter : JsonAdapter<AttractionResponse> = moshi.adapter(AttractionResponse::class.java)
-       return adapter.fromJson(textFromFile)!!.attractions
-    }
+
 }
